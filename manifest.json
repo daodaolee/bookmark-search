@@ -1,0 +1,26 @@
+{
+  "name": "Bookmark Search",
+  "description": "A Bookmark Search extension",
+  "version": "1.0",
+  "manifest_version": 2,
+  "icons": {
+    "16": "./img/logo.png",
+    "48": "./img/logo.png",
+    "128": "./img/logo.png"
+  },
+  "browser_action": {
+    "default_icon": "./img/logo.png",
+    "default_title": "一个浏览器书签快捷搜索的小程序",
+    "default_popup": "index.html"
+  },
+  "permissions": [
+    "tabs",
+    "notifications",
+    "storage",
+    "bookmarks",
+    "<all_urls>"
+  ],
+  "background": {
+    "page": "./background.html"
+  }
+}

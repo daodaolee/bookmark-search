@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html {
+        height: 100%;
+      }
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #222222;
+      }
+      canvas {
+        display: block;
+        position: relative;
+        z-index: 1;
+        pointer-events: none;
+        position: fixed;
+        top: 0;
+        display: none;
+      }
+      .container {
+        height: 800px;
+        text-align: center;
+        line-height: 800px;
+        width: 600px;
+        font-size: 30px;
+        margin: 0 auto;
+        color: white;
+      }
+      .button {
+        display: flex;
+        justify-content: center;
+      }
+      button {
+        margin: 10px 0;
+        width: 60px;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 4px;
+        text-align: center;
+        background: #1890ff;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:not(:last-child){
+        margin-right:20px
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <p class="result"></p>
+    </div>
+    <div class="button">
+      <button class="import">导入</button>
+      <button class="start">开始</button>
+      <button class="end">结束</button>
+    </div>
+    <canvas id="canvas" width="1920" height="950"></canvas>
+  </body>
+  <script src="./js/jquery-3.5.1.min.js"></script>
+  <script src="./js/lottery.js"></script>
+  <script src="./js/confetti.js"></script>
+</html>
