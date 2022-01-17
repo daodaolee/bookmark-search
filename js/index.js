@@ -61,77 +61,38 @@ $(async function () {
       color: "#531dab",
     },
   ];
-  let sliderTools = [{
-    imgUrl: "../img/lucky.png",
-    label: "抽奖",
-    link: "../lottery.html",
-    desc: "一个抽奖小工具"
-  },{
-    imgUrl: "../img/drink.png",
-    label: "喝水提醒",
-    desc: "一个喝水提醒工具",
-    onClick: function () {
-      $(".modal").css("display", "flex");
-      $(".modal .drink").css("display", "flex");
-      chrome.storage.local.get(["drinkTime"], function (val) {
-        let result = val.drinkTime ? Number(val.drinkTime) : 0;
-        document.getElementById("drinkTime").value = result;
-      });
-    }
-  }]
- 
+
   // 查询默认焦点
   $("#searchInput").focus();
   // 读取书签栏并渲染
   const bookmarks = await getBookMarksByParent()
-  chrome.storage.local.set({bookmarks})
   getTags(bookmarks, tagColor);
 
-  // 侧滑工具
-  sliderTools.forEach(item => {
-    let div = document.createElement("div");
-    div.classList.add("slider-tool-item");
-    div.title = item.title;
-    let img = document.createElement("img");
-    img.src = item.imgUrl;
-    let span = document.createElement("span");
-    span.innerText = item.label;
-    if (item.link) {
-      div.addEventListener("click", function () {
-        chrome.tabs.create({ url: item.link });
-      });
-    } else if (item.onClick) {
-      div.addEventListener("click", item.onClick);
-    }
-    div.appendChild(img);
-    div.appendChild(span);
-    $(".slider-tools-container").append(div);
-  })
 
   // 过滤渲染
   $("input").keyup(async function () {
     $("input").empty();
     let val = $("input").val();
-    if(!val){
+    if (!val) {
       getTags(bookmarks, tagColor)
       return
     }
     let filterResult = [];
-    for(let key = 0; key < bookmarks.length; key++){
+    for (let key = 0; key < bookmarks.length; key++) {
       let child = bookmarks[key].children;
       // 没有匹配过滤就跳出
-      if(!Array.isArray(child)){
+      if (!Array.isArray(child)) {
         continue
       }
       child.forEach(item => {
         // let target = `${item.title ? item.title.toUpperCase() : ""}-${item.url ? item.url.toUpperCase() : ""}`;
-        if(item.keyword && item.keyword.toUpperCase().indexOf(val.toUpperCase()) > -1){
+        if (item.keyword && item.keyword.toUpperCase().indexOf(val.toUpperCase()) > -1) {
           filterResult.push(item)
         }
       })
-      
+
     }
-    if(filterResult.length === 0){
+    if (filterResult.length === 0) {
       let empty = document.createElement("div");
       empty.classList.add("emptyData");
       let desc = document.createElement("span");
@@ -143,7 +104,7 @@ $(async function () {
       baidu.style.display = "inline-block";
       baidu.style.marginRight = "10px";
       baidu.style.cursor = "pointer";
-      baidu.addEventListener("click",function(){
+      baidu.addEventListener("click", function () {
         chrome.tabs.create({ url: `https://www.baidu.com/s?wd=${val}` })
       })
       let google = document.createElement("span");
@@ -152,7 +113,7 @@ $(async function () {
       google.style.color = "#1a73e8";
       google.style.display = "inline-block";
       baidu.style.cursor = "pointer";
-      google.addEventListener("click",function(){
+      google.addEventListener("click", function () {
         chrome.tabs.create({ url: `https://www.google.com/search?q=${val}` })
       })
       empty.appendChild(desc)
@@ -160,91 +121,17 @@ $(async function () {
       empty.appendChild(google)
       $(".tags").empty();
       $(".tags").append(empty);
-    }else{
+    } else {
       let result = await getParentNodeByChild(filterResult)
       getTags(result, tagColor);
     }
   });
-
-  // 设置按钮
-  $(".setting").click(function(){
-    $(".slider").addClass("active")
-  })
-
-  // 滑块关闭按钮
-  $(".slider-close").click(function(){
-    $(".slider").removeClass("active")
-  })
-
-  // 编辑书签展示
-  $(".addBookmark").click(async function(){
-    $(".modal").css("display", "flex");
-    $(".modal .bookmarks").css("display", "flex");
-    // 获取书签文件夹
-    const bookmarks = await getBookMarksParent();
-    bookmarks.forEach(book => {
-      let option = document.createElement("option");
-      option.value = book.value;
-      option.innerHTML = book.label;
-      $(".syncBookmarkList")[0].appendChild(option);
-    })
-  })
-
-  // 关闭编辑书签
-  $(".closeBookmarks").click(function(){
-    $(".modal").css("display", "none");
-    $(".modal .bookmarks").css("display", "none");
-  })
-  // 添加书签
-  $('.saveBookmarks').click(function(){
-    let bookAddr = $(".bookAddr").val();
-    let bookTitle = $(".bookTitle").val();
-    let bookKeyword = $(".bookKeyword").val();
-    let bookDesc = $(".bookDesc").val();
-    let sync = $(".syncBookmarkList").val();
-    if(!bookAddr || !bookTitle || !bookKeyword || !bookDesc){
-      alert("请填完整！");
-      return false
-    }
-    let reg = /^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/|www\.)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/
-    if(!reg.test(bookAddr)){
-      alert("地址格式有误！");
-      return false
-    }
-    chrome.storage.local.get(["bookmarks"], function (val) {
-      // 同步到书签
-      chrome.bookmarks.create({
-        parentId: sync,
-        title: bookTitle,
-        url: bookAddr
-      }, function(res) {
-        let tempBM = JSON.parse(JSON.stringify(val.bookmarks))
-        tempBM.forEach(item => {
-          if(item.id === sync){
-            item.children.push({
-              url: bookAddr,
-              title: bookTitle,
-              desc: bookDesc,
-              id: res.id,
-              keyword: bookKeyword
-            })
-          }
-        })
-        chrome.storage.local.set({tempBM});
-        noticeHandle("书签","新增成功，已同步到书签栏！")
-        getTags(tempBM, tagColor)
-
-        $(".modal").css("display", "none");
-        $(".modal .bookmarks").css("display", "none");
-      })
-    });
-  })
 });
 
 function getTags(data, tagColor) {
   $(".tags").empty();
-  for (let key = 0; key < data.length ; key++) {
-    if(!data[key].children){
+  for (let key = 0; key < data.length; key++) {
+    if (!data[key].children) {
       continue
     }
     let tagCategory = document.createElement("div");
@@ -267,7 +154,7 @@ function getTags(data, tagColor) {
       span.innerText = item.title || "";
       span.title = item.keyword;
       // span.style.color = "rgb(95,99,104)";
-     
+
       span.style.paddingLeft = "5px";
       span.style.transition = "all 0.2s ease-in-out";
       span.style.display = "inline-block";
@@ -286,11 +173,11 @@ function getTags(data, tagColor) {
       innerDiv.style.margin = "2px 10px 6px 0";
       innerDiv.style.lineHeight = "20px";
       innerDiv.appendChild(img);
-      if(item.title){
+      if (item.title) {
         innerDiv.appendChild(span);
         innerDiv.style.borderBottom = "2px solid " + tagColor[len].border;
       }
-      
+
       if (item.url) {
         innerDiv.addEventListener("click", function () {
           chrome.tabs.create({ url: item.url });
@@ -300,11 +187,11 @@ function getTags(data, tagColor) {
       }
       tagContainer.appendChild(innerDiv);
     });
-  
+
   }
 }
 
-function searchOther(type,val){
+function searchOther(type, val) {
   let url = "";
   switch (type) {
     case "baidu":
@@ -329,3 +216,31 @@ function debounce(handler, delay) {
     }, delay);
   };
 }
+
+// 背景
+chrome.storage.local.get(["isOpenBG"], function (result) {
+  if (result.isOpenBG) {
+    $(".switch").addClass('active');
+    window['rib'] = new Ribbons()
+  } else {
+    $(".switch").removeClass('active');
+    $("#bgCanvas").remove()
+    delete window['rib']
+  }
+})
+
+
+$(".switch").click(function () {
+  chrome.storage.local.get(["isOpenBG"], function (has) {
+    if (has.isOpenBG) {
+      $(".switch").removeClass('active');
+      chrome.storage.local.remove('isOpenBG')
+      $("#bgCanvas").remove()
+      delete window['rib']
+    } else {
+      $(".switch").addClass('active');
+      chrome.storage.local.set({ 'isOpenBG': 'active' })
+      window['rib'] = new Ribbons()
+    }
+  })
+})

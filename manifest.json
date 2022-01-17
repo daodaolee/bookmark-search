@@ -1,7 +1,7 @@
 {
   "name": "Bookmark Search",
   "description": "A Bookmark Search extension",
-  "version": "1.0",
+  "version": "1.1",
   "manifest_version": 2,
   "icons": {
     "16": "./img/logo.png",
@@ -14,11 +14,9 @@
     "default_popup": "index.html"
   },
   "permissions": [
-    "tabs",
-    "notifications",
-    "storage",
     "bookmarks",
-    "<all_urls>"
+    "storage",
+    "chrome://favicon/size/48/*"
   ],
   "background": {
     "page": "./background.html"

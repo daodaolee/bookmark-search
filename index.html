@@ -1,282 +1,337 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="./css/common.css" />
-    <style>
-       @media (prefers-color-scheme: dark) {
-        body {
-          background: #1D1C1E;
-          color: white;
-        }
-        .main-title{
-          color:white;
-        }
-        .main-title svg path{
-          fill: white
-        }
-        canvas{
-          background: #1D1C1E;
-        }
-        .tagCategory{
-          color: white
-        }
-        .tags span{
-          color: white
-        }
-        .slider{
-          background: black;
-        }
-        .slider svg path{
-          fill: white
-        }
-        
-      }
 
-      @media (prefers-color-scheme: light) {
-        body {
-          background: white;
-          color: #000;
-        }
-        canvas{
-          background: white;
-        }
-        .main-title svg path{
-          fill: black
-        }
-        .tagCategory{
-          color: #757575
-        }
-        .tags span{
-          color: rgb(95, 99, 104)
-        }
-        .slider{
-          background: white;
-        }
-        .slider .slider-close{
-          fill: black
-        }
-      } 
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/common.css" />
+  <style>
+    @media (prefers-color-scheme: dark) {
       body {
-        /* padding: 0 10px 10px 10px; */
-        position: relative;
-        overflow: hidden;
+        background: #1D1C1E;
+        color: white;
       }
-      .main {
-        /* padding: 0 10px 10px; */
-        min-height: 120px;
-        max-height: 100%;
-        overflow: hidden;
-      }
+
       .main-title {
-        margin: 0;
-        padding: 15px 0;
-        /* color: white; */
-        text-align: center;
-        position: relative;
+        color: white;
       }
-      .main-title svg{
-        position: absolute;
-        top:17px;
-        right:15px;
-        cursor: pointer;
-      }
-      .search {
-        padding: 0 10px 10px;
-      }
-      .search input {
-        width: 295px;
-      }
-      .tags{
-        padding:0 10px;
-        max-height: 470px;
-        overflow: auto;
-      }
-      .tags span:hover{
-        color: rgb(26, 115, 232) !important;
-      }
-      .emptyData {
-        position: absolute;
-        top: 300px;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 16px;
-        display: inline-block;
-        width: 160px;
-      }
-      .drink {
-        padding: 20px;
-        display: none;
-        /* display: flex; */
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-      }
-      .bookmarks {
-        padding: 20px;
-        display: none;
-        /* display: flex; */
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-      }
-      .bookmarks label{
-        width:185px;
+
+      .main-title .switch {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom:10px;
-      }
-      .bookmarks label div{
-        display: flex;
-        align-items: center;
-      }
-      .bookmarks select{
-        width:133px;
-        overflow:hidden;
-      }
-      .bookmarks input[type=text]{
-      
-        width: 110px;
-      }
-      .slider{
-        width: 340px;
-        height: 575px;
-        position: absolute;
-        top:0;
-        left: 0;
-        transform: translateX(-100%);
-        transition: all 0.4s cubic-bezier(0.18, -0.1, 0.04, 1.15);
-      }
-      .slider.active{
-        transform: translateX(0%);
-        z-index: 10;
-        opacity: 0.9;
-      }
-      .slider .slider-close{
-        cursor: pointer;
-        position: absolute;
-        top: 17px;
-        right: 15px;
-      }
-      .slider .slider-container{
-        width: 100%;
-        height: 530px;
-        position: absolute;
-        bottom: 0px;
-      }
-      .slider ul{
-        padding: 0 20px;
-      }
-      .slider li{
-        padding-top:15px;
-        padding-bottom: 3px;
-        font-size:16px;
-        border-bottom: 1px solid rgb(179, 176, 176);
-        cursor: pointer;
-      }
-      .slider li a {
-        color: #1890ff
-      }
-      .slider .slider-tools{
-        max-height: 150px;
-        overflow-x: hidden;
-        overflow-y: auto;
-        position: absolute;
-        bottom: 0;
-        border-top: 1px solid rgb(179, 176, 176);
-      }
-      .slider .slider-tools-container{
-        display: flex;
-        flex-wrap: wrap;
         justify-content: flex-start;
-      }
-      .slider .slider-tool-item{
-        width: 85px;
-        display: flex;
-        flex-direction: column;
         align-items: center;
+        position: absolute;
+        right: 13px;
+        top: 20px;
+        padding: 4px;
+        width: 14px;
+        height: 2px;
+        border-radius: 20px;
         cursor: pointer;
-        padding: 10px 0;
       }
-      .slider .slider-tool-item img{
-        width: 32px;
-        height: 32px;
-      }
-      .slider .slider-tool-item span{
-        padding-top: 5px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="main">
-      <h2 class="main-title">
-        <span>书签小助手</span>
-          <svg class="setting" t="1627987318951" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4687" width="16" height="16"><path d="M915.115104 186.392154H108.883873c-34.263361 0-62.024635-27.761274-62.024636-61.97654 0-34.264385 27.761274-62.025659 62.024636-62.025658h806.231231c34.216289 0 62.025659 27.761274 62.025659 62.025658 0 34.214243-27.809369 61.97654-62.025659 61.97654z m0 372.101763H108.883873c-34.263361 0-62.024635-27.761274-62.024636-61.97654 0-34.263361 27.761274-62.024635 62.024636-62.024635h806.231231c34.216289 0 62.025659 27.761274 62.025659 62.024635 0 34.216289-27.809369 61.97654-62.025659 61.97654z m0 403.116127H108.883873c-34.263361 0-62.024635-27.761274-62.024636-62.025658 0-34.215266 27.761274-61.97654 62.024636-61.97654h806.231231c34.216289 0 62.025659 27.761274 62.025659 61.97654 0 34.265408-27.809369 62.025659-62.025659 62.025658z" p-id="4688"></path></svg>
-      </h2>
-      <div class=" search">
-        <input type="text" placeholder="输入关键字查询" id="searchInput" />
-      </div>
-      <div class="tags"></div>
-    </div>
-    <!-- 弹窗 -->
-    <div class="modal">
-      <div class="container drink">
-        <input type="number" placeholder="分钟后提示" id="drinkTime" />
-        <div class="button">
-          <button class="closeDrinkModal">关闭</button>
-          <button class="saveDrinkModal">确定</button>
-          <button class="closeDrinkNotice">关闭消息提示</button>
-        </div>
-      </div>
-      <div class="container bookmarks">
-        <label>地址：<input type="text" placeholder="请输入" class="bookAddr" /></label>
-        <label>标题：<input type="text" placeholder="请输入" class="bookTitle" /></label>
-        <label>关键字：<input type="text" placeholder="请输入" class="bookKeyword" /></label>
-        <label>描述：<input type="text" placeholder="请输入" class="bookDesc"/></label>
 
-        
-        <label>同步：
-          <select class="syncBookmarkList">
-            <option value="1" selected>一级</option>
-          </select>
-        </label>
-       
-        <div class="button" style="margin-top:10px;">
-          <button class="closeBookmarks">关闭</button>
-          <button class="saveBookmarks">保存</button>
-        </div>
-      </div>
-    </div>
-    
-    <!-- 滑块 -->
-    <div class="slider">
-      <svg t="1627638303980" class="slider-close" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2651" width="17" height="17">
-        <path d="M853.728 755.424q0 22.848-16 38.848l-77.728 77.728q-16 16-38.848 16t-38.848-16l-168-168-168 168q-16 16-38.848 16t-38.848-16l-77.728-77.728q-16-16-16-38.848t16-38.848l168-168-168-168q-16-16-16-38.848t16-38.848l77.728-77.728q16-16 38.848-16t38.848 16l168 168 168-168q16-16 38.848-16t38.848 16l77.728 77.728q16 16 16 38.848t-16 38.848l-168 168 168 168q16 16 16 38.848z" p-id="2652"></path>
-      </svg>
-      <div class="slider-container">
-        <ul>
-          <!-- <li class="syncBookmark"><a>同步书签</a></li> -->
-          <!-- <li class="addBookmark"><a>新增书签</a></li> -->
-        </ul>
-        <div class="w100 slider-tools">
-          <div class="slider-tools-container">
-            <!-- <div class="slider-tool-item lucky">
-              <svg t="1627981463287" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2495" width="32" height="32"><path d="M433.774 232.14c-32.812 0-59.505 26.696-59.507 59.505 0 32.774 26.632 59.446 59.393 59.508h59.62v-59.554c-0.025-32.792-26.708-59.46-59.506-59.46z m-202.7 182.083v77.974c0 13.892 11.369 25.26 25.263 25.26h236.944V388.963H256.334c-13.891 0-25.26 11.364-25.26 25.26z m359.212-63.07c32.78-0.033 59.448-26.716 59.448-59.508 0-32.809-26.697-59.506-59.511-59.506-32.784 0-59.46 26.649-59.509 59.421 0.004 0.053 0.004 0.109 0.004 0.156l-0.004 59.436h59.572z m-314.28 415.494c0 13.087 10.644 23.73 23.729 23.73h193.547V554.892H276.005v211.754z" fill="#d81e06" p-id="2496"></path><path d="M512 0.346C229.421 0.346 0.346 229.42 0.346 512c0 282.578 229.075 511.654 511.654 511.654S1023.652 794.578 1023.652 512C1023.653 229.42 794.58 0.346 512 0.346z m318.362 491.851c0 28.398-18.99 52.432-44.934 60.116v214.334c0 33.73-27.435 61.168-61.165 61.168H519.304c-2.246 0.951-4.712 1.48-7.305 1.48s-5.06-0.529-7.305-1.48h-204.96c-33.729 0-61.168-27.44-61.168-61.168V552.313c-25.942-7.684-44.929-31.718-44.929-60.116v-77.974c0-34.573 28.125-62.698 62.696-62.698h101.252c-12.995-16.497-20.754-37.297-20.754-59.88 0-53.454 43.488-96.94 96.942-96.94 32.083 0 60.57 15.667 78.226 39.748 17.656-24.08 46.14-39.749 78.228-39.749 53.454 0 96.94 43.486 96.94 96.941 0 22.583-7.758 43.382-20.753 59.88h101.249c34.572 0 62.698 28.125 62.698 62.698v77.974z" fill="#d81e06" p-id="2497"></path><path d="M530.72 790.375h193.543c13.09 0 23.732-10.642 23.732-23.73V554.894H530.719v235.482z m236.944-401.411H530.719v128.492h236.946c13.894 0 25.258-11.367 25.258-25.259v-77.974c0-13.895-11.364-25.26-25.26-25.26z" fill="#d81e06" p-id="2498"></path></svg>
-              <span>抽奖</span>
-            </div> -->
-          </div>
-        </div>
-      </div>
-    </div>
-    <script size="90" alpha='0.1' zIndex="-2" src="./js/ribbon.js"></script>
-  </body>
-  <script src="./js/jquery-3.5.1.min.js"></script>
+      .main-title .switch .circle {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+      }
 
-  <script src="./js/index.js"></script>
-  <script src="./js/tools.js"></script>
-  <script src="./js/drink.js"></script>
+      .main-title .switch.light {
+        border: 1px solid #767676;
+      }
+
+      .main-title .switch.active {
+        justify-content: flex-end;
+        border-color: #1990FF;
+      }
+
+      .main-title .switch.light .circle {
+        background: #a5a3a3;
+      }
+
+      .main-title .switch.light.active .circle {
+        background: #1990FF;
+      }
+
+      canvas {
+        background: #1D1C1E;
+      }
+
+      .tagCategory {
+        color: white
+      }
+
+      .tags span {
+        color: white
+      }
+
+      .slider {
+        background: black;
+      }
+
+      .slider svg path {
+        fill: white
+      }
+
+    }
+
+    @media (prefers-color-scheme: light) {
+      body {
+        background: white;
+        color: #000;
+      }
+
+      canvas {
+        background: white;
+      }
+
+      .main-title svg path {
+        fill: black
+      }
+
+      .tags span {
+        color: rgb(97, 99, 102);
+      }
+    }
+
+    .main-title .switch {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      position: absolute;
+      right: 13px;
+      top: 20px;
+      padding: 4px;
+      width: 14px;
+      height: 2px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .main-title .switch .circle {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .main-title .switch {
+      border: 1px solid #767676;
+    }
+
+    .main-title .switch.active {
+      justify-content: flex-end;
+      border-color: #1990FF;
+    }
+
+    .main-title .switch .circle {
+      background: #a5a3a3;
+    }
+
+    .main-title .switch.active .circle {
+      background: #1990FF;
+    }
+
+    .tagCategory {
+      color: #757575
+    }
+
+    .slider {
+      background: white;
+    }
+
+    .slider .slider-close {
+      fill: black
+    }
+
+    body {
+      /* padding: 0 10px 10px 10px; */
+      position: relative;
+      overflow: hidden;
+    }
+
+    .main {
+      /* padding: 0 10px 10px; */
+      min-height: 120px;
+      max-height: 100%;
+      overflow: hidden;
+    }
+
+    .main-title {
+      margin: 0;
+      padding: 15px 0;
+      /* color: white; */
+      text-align: center;
+      position: relative;
+    }
+
+    .main-title svg {
+      position: absolute;
+      top: 17px;
+      right: 15px;
+      cursor: pointer;
+    }
+
+    .search {
+      padding: 0 10px 10px;
+    }
+
+    .search input {
+      width: 295px;
+    }
+
+    .tags {
+      padding: 0 10px;
+      max-height: 470px;
+      overflow: auto;
+    }
+
+    .tags span:hover {
+      color: rgb(26, 115, 232) !important;
+    }
+
+    .emptyData {
+      position: absolute;
+      top: 300px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 16px;
+      display: inline-block;
+      width: 160px;
+    }
+
+    .bookmarks {
+      padding: 20px;
+      display: none;
+      /* display: flex; */
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .bookmarks label {
+      width: 185px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .bookmarks label div {
+      display: flex;
+      align-items: center;
+    }
+
+    .bookmarks select {
+      width: 133px;
+      overflow: hidden;
+    }
+
+    .bookmarks input[type=text] {
+
+      width: 110px;
+    }
+
+    .slider {
+      width: 340px;
+      height: 575px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+      transition: all 0.4s cubic-bezier(0.18, -0.1, 0.04, 1.15);
+    }
+
+    .slider.active {
+      transform: translateX(0%);
+      z-index: 10;
+      opacity: 0.9;
+    }
+
+    .slider .slider-close {
+      cursor: pointer;
+      position: absolute;
+      top: 17px;
+      right: 15px;
+    }
+
+    .slider .slider-container {
+      width: 100%;
+      height: 530px;
+      position: absolute;
+      bottom: 0px;
+    }
+
+    .slider ul {
+      padding: 0 20px;
+    }
+
+    .slider li {
+      padding-top: 15px;
+      padding-bottom: 3px;
+      font-size: 16px;
+      border-bottom: 1px solid rgb(179, 176, 176);
+      cursor: pointer;
+    }
+
+    .slider li a {
+      color: #1890ff
+    }
+
+    .slider .slider-tools {
+      max-height: 150px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: absolute;
+      bottom: 0;
+      border-top: 1px solid rgb(179, 176, 176);
+    }
+
+    .slider .slider-tools-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .slider .slider-tool-item {
+      width: 85px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      padding: 10px 0;
+    }
+
+    .slider .slider-tool-item img {
+      width: 32px;
+      height: 32px;
+    }
+
+    .slider .slider-tool-item span {
+      padding-top: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main">
+    <h2 class="main-title">
+      <span>书签小助手</span>
+      <div class="switch" title="背景开关">
+        <div class="circle"></div>
+      </div>
+    </h2>
+    <div class="search">
+      <input type="text" placeholder="输入关键字查询" id="searchInput" />
+    </div>
+    <div class="tags"></div>
+  </div>
+
+</body>
+<script src="./js/jquery-3.5.1.min.js"></script>
+
+<script src="./js/index.js"></script>
+<script src="./js/tools.js"></script>
+
 </html>
